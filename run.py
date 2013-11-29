@@ -15,18 +15,13 @@ def hello():
     return "Hello World!"
 
 def getLatLng(barang):
-	'''if request.method == 'GET':
-		barang = None
-		if 'barang' in request.args:
-			barang = request.args.get('barang')'''
-
+	
 	if barang:
 		url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s,%s&sensor=false' % (barang, "philippines")
 		r = requests.get(url)
 		location = json.loads(r.text)['results'][0]['geometry']['location']
 		return location
-		
-	return "Barangay not found. Can't parse lat/long"
+	return {'lat': 'NA', 'lng': 'NA'}
 
 
 @app.route("/receive-sms", methods=['GET', 'POST'])
@@ -82,14 +77,6 @@ def reply():
 			elif '5' in help_request['type']:
 				Electricity = True
 			
-			'''# TODO: handle route 6 options
-			elif '6' in help_request['type']: 
-				# Present other options to the user
-				resp.message("What do you need? Enter all that apply (e.g. 12 for Water and Food): 1)Water, 2)Food, 3)Medical, 4)Shelter, 5)Electricity, 6)Other")
-				counter += 1
-				session['counter'] = counter
-				return str(resp)'''
-			
 			#Save to database
 			connection = httplib.HTTPSConnection('api.parse.com', 443)
 			connection.connect()
@@ -99,7 +86,7 @@ def reply():
 				"barangay": help_request['bar'], 
 				"Lat": help_request['lat'],
 				"Lng": help_request['lng'],
-				"water" : Water,s
+				"water" : Water,
 				"food": Food,
 				"shelter" : Shelter,
 				"medical" : Medical, 
@@ -125,8 +112,6 @@ def reply():
 		return str(resp)	
 
 	#TODO: timeout for sessions
-
-
 
 
 '''@app.route("/latlng")
