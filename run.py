@@ -4,7 +4,7 @@ import requests
 from unicodedata import normalize
 import json,httplib,requests
 
-from flask import Flask, request, session, json
+from flask import Flask, request, session, json, render_template
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ app.secret_key = 'testing'
  
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template("resourcemap.html")
 
 def getLatLng(barang):
 	
